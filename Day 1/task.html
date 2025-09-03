@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Task Manager</h2>
+
+    <!-- input task form -->
+    <form id="taskForm">
+      <input type="text" id="taskInput" placeholder="Enter a task." >
+      <button type="submit" id="addTaskBtn" disabled>Add Task</button>
+    </form>
+
+    <!-- Task List -->
+    <ul id="taskList"></ul>
+  </div>
+
+  <script>
+      const input = document.getElementById("taskInput");
+      const addTaskBtn = document.getElementById("addTaskBtn");
+      const taskForm = document.getElementById("taskForm");
+
+      // enable/disable button
+      input.addEventListener('input', function(){
+        addTaskBtn.disabled = !this.value.trim();
+      })
+
+      // Enable/disable button based on input
+      taskForm.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        addTask();
+      });
+
+      // Handle form submission
+      document.getElementById("taskForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // Prevent form reload
+        addTask();
+      });
+
+      // Add a new task
+      function addTask() {
+        const taskText = taskInput.value.trim();
+        if (taskText === "") return;
+
+        const li = document.createElement("li");
+
+
+      // Task text
+      const span = document.createElement("span");
+      span.textContent = taskText;
+
+      // Status label
+      const statusSpan = document.createElement("span");
+      statusSpan.textContent = "Status: Complete";
+      statusSpan.className = "status-label";
+      statusSpan.style.marginLeft = "10px";
+
+      // Action buttons
+      const actions = document.createElement("div");
+      actions.className = "task-action";
+
+      // Edit button
+      const editBtn = document.createElement("button");
+      editBtn.textContent = "Edit";
+      editBtn.className = "edit-btn";
+      editBtn.onclick = () => inlineEditTask(li, span, statusSpan, editBtn);
+
+      // Delete button
+      const deleteBtn = document.createElement("button");
+      deleteBtn.textContent = "Delete";
+      deleteBtn.className = "delete-btn";
+      deleteBtn.onclick = () => li.remove();
+
+      actions.appendChild(editBtn);
+      actions.appendChild(deleteBtn);
+
+      li.appendChild(span);
+      li.appendChild(statusSpan);
+      li.appendChild(actions);
+
+      document.getElementById("taskList").appendChild(li);
+
+      input.value = "";
+      addTaskBtn.disabled = true;
+    }
+
+    // Inline editing with real-time status update
+    function inlineEditTask(li, span, statusSpan, editBtn) {
+      span.style.display = "none";
+      statusSpan.style.display = "none";
+
+      // Input field
+      const input = document.createElement("input");
+      input.type = "text";
+      input.value = span.textContent;
+      input.style.flex = "1";
+      li.insertBefore(input, span);
+
+      // Dropdown for status
+      const select = document.createElement("select");
+      const optionIncomplete = document.createElement("option");
+      optionIncomplete.value = "Incomplete";
+      optionIncomplete.textContent = "Incomplete";
+      const optionComplete = document.createElement("option");
+      optionComplete.value = "Complete";
+      optionComplete.textContent = "Complete";
+
+      select.appendChild(optionIncomplete);
+      select.appendChild(optionComplete);
+
+      // Set current status
+      select.value = statusSpan.textContent.replace("Status: ", "");
+
+      li.insertBefore(select, span);
+
+      // Change Edit button to Done
+      editBtn.textContent = "Done";
+
+      // Update text on Enter key
+      input.addEventListener("keypress", function(e) {
+        if (e.key === "Enter") {
+          span.textContent = input.value.trim() || span.textContent;
+          li.removeChild(input);
+          li.removeChild(select);
+          span.style.display = "inline";
+          statusSpan.style.display = "inline";
+          editBtn.textContent = "Edit";
+        }
+      });
+
+      // Update status immediately on change
+      select.addEventListener("change", function() {
+        statusSpan.textContent = "Status: " + select.value;
+      });
+
+      // Clicking Done restores normal view
+      editBtn.onclick = () => {
+        span.textContent = input.value.trim() || span.textContent;
+        statusSpan.textContent = "Status: " + select.value;
+        li.removeChild(input);
+        li.removeChild(select);
+        span.style.display = "inline";
+        statusSpan.style.display = "inline";
+        editBtn.textContent = "Edit";
+        editBtn.onclick = () => inlineEditTask(li, span, statusSpan, editBtn);
+      };
+    }
+  </script>
+
+</body>
+</html>
