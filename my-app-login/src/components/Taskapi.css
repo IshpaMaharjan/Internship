@@ -1,0 +1,84 @@
+.task-api {
+  max-width: 700px;
+  margin: 0 auto;
+  margin-top: 150px;
+  padding: 20px;
+  font-family: Arial;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.task-api h1 {
+  text-align: center;
+  color: black;
+}
+
+.task-input-container {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-input {
+    flex: 1;
+    font-size: 16;
+    padding: 10px;
+    font-family: Arial;
+    border: 1px solid grey;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.enter-task {
+  margin: 0;
+  color: #666;
+}
+
+.input-area {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.status {
+  color: green;
+  font-size: 16px;
+}
+
+.edit-btn, .delete-btn, .add-task-btn {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.edit-btn {
+  background-color: blue;
+  color: white;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.add-task-btn {
+  display: block;
+  width: 30%;
+  padding: 10px;
+  background-color: #28a745;
+  color: white;
+  font-size: 16px;
+  margin: 0;
+  margin-left: 10px;
+}
